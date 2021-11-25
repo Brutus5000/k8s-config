@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodebb
+  labels:
+    app: nodebb
+spec:
+  selector:
+    app: nodebb
+  ports:
+    - port: 4567
+      targetPort: 4567
+
+---
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nodebb
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`forum.supcomhub.org`)
+      kind: Rule
+      services:
+        - name: nodebb
+          port: 4567
+  tls:
+    certResolver: myresolver
+
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: nodebb
+#  labels:
+#    app: nodebb
+#spec:
+#  rules:
+#    - host: forum.supcomhub.org
+#      http:
+#        paths:
+#          - path: /
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: nodebb
+#                port:
+#                  number: 4567

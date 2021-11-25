@@ -1,0 +1,59 @@
+= FAF K8S config
+
+== Requirements & tools
+
+* https://k3s.io[k3s] or https://k3d.io/[k3d] installed
+* https://stedolan.github.io/jq/[jq] installed (required for scripts)
+* *Recommended:* A k8s ui such as https://k8slens.dev/[Lens] (GUI) or https://k9scli.io/[k9s] (CLI)
+
+== Motivation
+
+=== Immediate goals
+
+* Allow more people access to logs, configuration and deployments for certain services without giving them full server
+access.
+** Role based access control
+** Direct cluster access via kubectl for all authorized developers
+** Improved configuration and secret management
+* Advanced resource controls thanks to cpu and ram limits (no app shall consume all CPU ever again)
+* Easier debugging on test environment due to port-forwarding of pods without compromising production config
+
+=== Long-term goals
+
+* Better integration into CI pipelines with automated deployments
+
+=== Non-Goals
+* We do not move to k8s because it is cool and fancy!
+** K8s has much more complexity compared to our docker-compose stack
+** We would avoid it, if docker-compose could solve our problems (which it can't).
+** It was a very conscious trade-off decision.
+* We do not move to k8s because we want to deploy FAF on a managed cloud provider.
+** Cloud providers are super expensive. We'd have nothing to gain here.
+* We do not move to k8s become highly available!
+** High availability only works if all components are highly available. Most of our apps are not built in that way at
+   all.
+** Deployments with less downtime might be a benefit for _some_ services.
+
+== Decision Log
+
+=== Distribution selection
+
+* We'll use k3s.
+** It is fully supported by NixOS and is a simplified distribution which should be easier to maintain.
+** It also runs on developer machines.
+** It uses few resources.
+* Running the same distribution on prod and on local machines makes things more predictable and scripts more stable.
+** Minikube should be mostly compatible, if some devs insist on using it
+
+
+=== Volume management
+
+* We'll run with manual managed persistent volumes and claims, because we need predictable paths. +
+* Predictable paths are a necessity for managing the volumes with ZFS. +
+* Using k3s local-path-provisioner we can define the prefix (in the configmap `local-path-config`) and the suffix
+  (in the mounting options in the pod), but in between these there is a random uuid we can't know beforehand. +
+This breaks predefined setups and scripts.
+
+=== Developer environment & reproducibility
+
+- No service shall go live if its initial configuration or installation can't be scripted.

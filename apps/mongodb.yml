@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: mongodb
+  name: mongodb
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: mongodb
+  serviceName: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - envFrom:
+          - configMapRef:
+              name: mongodb
+          - secretRef:
+              name: mongodb
+        image: mongo:4.2.17
+        imagePullPolicy: IfNotPresent
+        name: mongodb
+        ports:
+        - containerPort: 27017
+          protocol: TCP
+        volumeMounts:
+        - name: data
+          mountPath: /data/db
+      restartPolicy: Always
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: mongodb-pvc

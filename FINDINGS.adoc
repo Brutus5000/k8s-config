@@ -1,0 +1,18 @@
+= Findings on migrating to K8s
+
+On this page we will document problems that we encountered when moving to a proper k8s setup.
+The idea is to collect them and send them upstream to the respective projects so that it might be improved in the future.
+
+== NodeBB
+
+_These findings are not yet reported upstream._
+
+1. All configuration **and** secrets are in one file: `config.json`. Therefore we can't use regular split of config maps and secrets and everything must be a secret.
+1. The config.json can not be mounted into the pod from a secret. The installer fails on doing so.
++
+[source]
+----
+warn: NodeBB Setup Aborted.
+Error: EROFS: read-only file system, open '/usr/src/app/config.json'
+----
+1. Workaround: Mount `config.json` directly into a persistent volume with read/write permission. Operators without server access then need to exec into the container and edit the file from there.

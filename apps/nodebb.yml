@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nodebb
+  name: nodebb
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: nodebb
+  template:
+    metadata:
+      labels:
+        app: nodebb
+    spec:
+      initContainers:
+        # NodeBB needs a writable config.json therefore we copy it from secret into an empty directory
+        - name: copy-config-json
+          image: busybox:stable
+          imagePullPolicy: Always
+          command: ['sh', '-c', "cp /secret/config.json /pod/config.json && chown 1000:1000 /pod/config.json"]
+          volumeMounts:
+            - name: pod-config
+              mountPath: /pod
+            - name: stored-config
+              mountPath: /secret
+      containers:
+        - image: nodebb/docker:1.18.5
+          imagePullPolicy: IfNotPresent
+          name: nodebb
+          ports:
+            - containerPort: 4567
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /usr/src/app/public/uploads
+            - name: pod-config
+              mountPath: /usr/src/app/config.json
+              subPath: "config.json"
+      restartPolicy: Always
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: nodebb-data-pvc
+        - name: pod-config
+          emptyDir: {}
+        - name: stored-config
+          secret:
+            secretName: nodebb
+            defaultMode: 420

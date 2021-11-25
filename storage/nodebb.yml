@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nodebb-data-volume
+  labels:
+    type: local
+    app: nodebb
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/opt/faf/data/nodebb"
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nodebb-config-volume
+  labels:
+    type: local
+    app: nodebb
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/opt/faf/config/nodebb"
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nodebb-data-pvc
+  labels:
+    app: nodebb
+spec:
+  storageClassName: manual
+  volumeName: nodebb-data-volume
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nodebb-config-pvc
+  labels:
+    app: nodebb
+spec:
+  storageClassName: manual
+  volumeName: nodebb-config-volume
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Mi
