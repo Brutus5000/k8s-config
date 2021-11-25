@@ -6,5 +6,3 @@ metadata:
     app: mongodb
 data:
   MONGO_INITDB_ROOT_USERNAME: root
-  MONGO_NODEBB_DATABASE: nodebb
-  MONGO_NODEBB_USERNAME: nodebb

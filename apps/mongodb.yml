@@ -6,7 +6,7 @@ metadata:
   name: mongodb
 spec:
   podManagementPolicy: OrderedReady
-  replicas: 1
+  replicas: 1  # Never scale more than 1 replica. This will most probably corrupt the data.
   revisionHistoryLimit: 10
   selector:
     matchLabels:

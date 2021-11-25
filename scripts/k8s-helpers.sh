@@ -44,15 +44,22 @@ check_resource_exists_or_fail() {
   EXISTS=$(kubectl get "$RESOURCE_TYPE" "$RESOURCE_NAME" >/dev/null 2>/dev/null && echo true || echo false)
   if test "$EXISTS" = "false"
   then
-    echo "$RESOURCE_TYPE $RESOURCE_NAME not applied. Aborting."
+    echo "$RESOURCE_TYPE $RESOURCE_NAME missing. Aborting."
     exit 1
   fi
 }
 
-get_pod_variable() {
-  POD=$1
-  VARIABLE="\${$2}"
-  kubectl exec $POD -- /bin/sh -c "echo ${VARIABLE}"
+get_newest_pod_by_app_name() {
+  APP_NAME=$1
+  kubectl get pod -l app="$APP_NAME" -o jsonpath="{.items[0].metadata.name}" --sort-by=.status.startTime | tail -n 1
+}
+
+get_config_value() {
+  kubectl get cm "$1" -o json | jq -r ".data.${2}"
+}
+
+get_secret_value() {
+  kubectl get secret "$1" -o json | jq -r ".data.${2}" | base64 -d
 }
 
 # has_annotation(resourceType [e.g. pod], resourceName [e.g. mongodb], annotationName, annotationValue)

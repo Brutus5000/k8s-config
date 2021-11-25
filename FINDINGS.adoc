@@ -15,4 +15,4 @@ _These findings are not yet reported upstream._
 warn: NodeBB Setup Aborted.
 Error: EROFS: read-only file system, open '/usr/src/app/config.json'
 ----
-1. Workaround: Mount `config.json` directly into a persistent volume with read/write permission. Operators without server access then need to exec into the container and edit the file from there.
+1. Workaround: Build the `config.json` via script from an init container out of configmap and secret values.

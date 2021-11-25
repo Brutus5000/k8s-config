@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nodebb
+  labels:
+    app: nodebb
+data:
+  SELF_URL: http://localhost:4567
+  MONGO_DATABASE: nodebb
+  MONGO_USERNAME: nodebb
+  HYDRA_BASE_URL: https://hydra.faforever.com
+  API_BASE_URL: https://api.faforever.com
+  # A template of the config.json with placeholders of variables that will be populated from configmap and secret
+  config.json.template: |-
+    {
+      "url": "#SELF_URL#",
+      "port": 4567,
+      "secret": "#COOKIE_SECRET#",
+      "database": "mongo",
+      "mongo": {
+        "host": "mongodb",
+        "port": "27017",
+        "username": "#MONGO_USERNAME#",
+        "password": "#MONGO_PASSWORD#",
+        "database": "#MONGO_DATABASE#"
+      },
+      "oauth": {
+        "authorizationURL": "#HYDRA_BASE_URL#/oauth2/auth",
+        "tokenURL": "#HYDRA_BASE_URL#/oauth2/token",
+        "fafApiProfileURL": "#API_BASE_URL#/me",
+        "id": "faf-forum",
+        "secret": "#OAUTH_SECRET#",
+        "scope": "public_profile"
+      }
+    }
+  # Configuration shell scripts
+  # - prepares the only mounted data folder by setting permissions to the node user
+  # - writes a config.json with oauth section based on variables and secrets
+  build-config.sh: |-
+    #!/bin/sh
+    chown 1000:1000 /usr/src/app/public/uploads
+    cp /config/config.json.template /pod/config.json
+    chown 1000:1000 /pod/config.json
+    sed -i "s/#SELF_URL#/${SELF_URL//\//\\\/}/g" /pod/config.json
+    sed -i "s/#COOKIE_SECRET#/${COOKIE_SECRET}/g" /pod/config.json
+    sed -i "s/#MONGO_USERNAME#/${MONGO_USERNAME}/g" /pod/config.json
+    sed -i "s/#MONGO_PASSWORD#/${MONGO_PASSWORD}/g" /pod/config.json
+    sed -i "s/#MONGO_DATABASE#/${MONGO_DATABASE}/g" /pod/config.json
+    sed -i "s/#HYDRA_BASE_URL#/${HYDRA_BASE_URL//\//\\\/}/g" /pod/config.json
+    sed -i "s/#API_BASE_URL#/${API_BASE_URL//\//\\\/}/g" /pod/config.json
+    sed -i "s/#OAUTH_SECRET#/${OAUTH_SECRET}/g" /pod/config.json

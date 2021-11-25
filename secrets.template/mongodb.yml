@@ -6,5 +6,4 @@ metadata:
     app: mongodb
 data:
   MONGO_INITDB_ROOT_PASSWORD: YmFuYW5h
-  MONGO_NODEBB_PASSWORD: YmFuYW5h
 type: Opaque

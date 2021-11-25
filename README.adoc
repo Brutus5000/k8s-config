@@ -57,3 +57,4 @@ This breaks predefined setups and scripts.
 === Developer environment & reproducibility
 
 - No service shall go live if its initial configuration or installation can't be scripted.
+- Scripts shall be idempotent / re-runnable without fatal consequences. We will use k8s annotations to keep track of the state.

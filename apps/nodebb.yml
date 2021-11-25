@@ -17,15 +17,26 @@ spec:
     spec:
       initContainers:
         # NodeBB needs a writable config.json therefore we copy it from secret into an empty directory
-        - name: copy-config-json
+        - name: setup
           image: busybox:stable
           imagePullPolicy: Always
-          command: ['sh', '-c', "cp /secret/config.json /pod/config.json && chown 1000:1000 /pod/config.json"]
+          command: ['sh', '-c', "/config/build-config.sh"]
+          envFrom:
+            - configMapRef:
+                name: nodebb
+            - secretRef:
+                name: nodebb
           volumeMounts:
             - name: pod-config
               mountPath: /pod
-            - name: stored-config
-              mountPath: /secret
+            - name: config-template
+              mountPath: /config/config.json.template
+              subPath: config.json.template
+            - name: config-script
+              mountPath: /config/build-config.sh
+              subPath: build-config.sh
+            - name: data
+              mountPath: /usr/src/app/public/uploads
       containers:
         - image: nodebb/docker:1.18.5
           imagePullPolicy: IfNotPresent
@@ -38,7 +49,7 @@ spec:
               mountPath: /usr/src/app/public/uploads
             - name: pod-config
               mountPath: /usr/src/app/config.json
-              subPath: "config.json"
+              subPath: config.json
       restartPolicy: Always
       volumes:
         - name: data
@@ -46,7 +57,10 @@ spec:
             claimName: nodebb-data-pvc
         - name: pod-config
           emptyDir: {}
-        - name: stored-config
-          secret:
-            secretName: nodebb
-            defaultMode: 420
+        - name: config-script
+          configMap:
+            name: nodebb
+            defaultMode: 077
+        - name: config-template
+          configMap:
+            name: nodebb
