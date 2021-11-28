@@ -3,9 +3,48 @@
 On this page we will document problems that we encountered when moving to a proper k8s setup.
 The idea is to collect them and send them upstream to the respective projects so that it might be improved in the future.
 
-== NodeBB
+== K3s / Traefik / Let's Encrypt setup
 
 _These findings are not yet reported upstream._
+
+Traefik needs some setup before it can work with Let's Encrypt. Unfortunately there is no particular documentation neither in K3s nor in the Traefik Helm chart on how to exactly achieve that.
+
+**Traefik "native" solution:**
+
+Traefik needs a certificate resolver, but there is no way in the Helm chart to do this explicitly. The only way is additionalArguments (global Traefik params).
+So you need to add a `HelmChartConfig` and put it into `/var/lib/rancher/k3s/server/manifests/traefik-config.yaml`.
+
+Example:
+[source,yaml]
+----
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    ports:
+      web:
+        redirectTo: websecure
+    additionalArguments:
+      - --certificatesresolvers.default.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+      - --certificatesresolvers.default.acme.httpchallenge=true
+      - --certificatesresolvers.default.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.default.acme.email=admin@my-domain.com
+      - --certificatesresolvers.default.acme.storage=/data/acme.json
+----
+
+As soon as you save the file, k3s will apply it and Traefik will be restarted. In the next step all ingress resources need to be annotated with
+[source,yaml]
+----
+  annotations:
+    traefik.ingress.kubernetes.io/router.tls.certresolver: default
+----
+
+== NodeBB
+
+_Not all of these findings are reported upstream yet._
 
 1. All configuration **and** secrets are in one file: `config.json`. Therefore we can't use regular split of config maps and secrets and everything must be a secret.
 1. The config.json can not be mounted into the pod from a secret. The installer fails on doing so.
@@ -16,3 +55,5 @@ warn: NodeBB Setup Aborted.
 Error: EROFS: read-only file system, open '/usr/src/app/config.json'
 ----
 1. Workaround: Build the `config.json` via script from an init container out of configmap and secret values.
+1. Installing and activating plugins inside the container cannot be done before startup of the container and requires to build processes. +
+  We made https://github.com/NodeBB/NodeBB/pull/10036[pull request #10036] to improve this.

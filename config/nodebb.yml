@@ -10,8 +10,12 @@ data:
   MONGO_USERNAME: nodebb
   HYDRA_BASE_URL: https://hydra.faforever.com
   API_BASE_URL: https://api.faforever.com
+  active_modules: |
+    nodebb-plugin-dbsearch
+    nodebb-plugin-sso-oauth-faforever
+    nodebb-plugin-write-api
   # A template of the config.json with placeholders of variables that will be populated from configmap and secret
-  config.json.template: |-
+  config.json.template: |
     {
       "url": "#SELF_URL#",
       "port": 4567,
@@ -35,8 +39,9 @@ data:
     }
   # Configuration shell scripts
   # - prepares the only mounted data folder by setting permissions to the node user
+  # - install npm modules for required plugins
   # - writes a config.json with oauth section based on variables and secrets
-  build-config.sh: |-
+  build-config.sh: |
     #!/bin/sh
     chown 1000:1000 /usr/src/app/public/uploads
     cp /config/config.json.template /pod/config.json

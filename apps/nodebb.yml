@@ -38,7 +38,8 @@ spec:
             - name: data
               mountPath: /usr/src/app/public/uploads
       containers:
-        - image: nodebb/docker:1.18.5
+#        - image: nodebb/docker:1.18.5
+        - image: brutus5000/nodebb:k8s
           imagePullPolicy: IfNotPresent
           name: nodebb
           ports:
@@ -50,6 +51,9 @@ spec:
             - name: pod-config
               mountPath: /usr/src/app/config.json
               subPath: config.json
+            - name: config-script
+              mountPath: /usr/src/app/active_modules
+              subPath: active_modules
       restartPolicy: Always
       volumes:
         - name: data

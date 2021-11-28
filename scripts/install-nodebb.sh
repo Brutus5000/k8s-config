@@ -50,8 +50,11 @@ else
   NODEBB_POD=$(get_newest_pod_by_app_name nodebb)
 
   echo "Running NodeBB setup"
-  kubectl exec "$NODEBB_POD" -- ./nodebb setup
+  kubectl exec "$NODEBB_POD" -c nodebb -- ./nodebb setup
   kubectl annotate deployment nodebb setup="done"
 
-  echo "Please write down the admin password and store it safely. You will need it in case OAuth setup breaks."
+  echo "##########################################################################################################"
+  echo "# Please write down the admin password and store it safely. You will need it in case OAuth setup breaks. #"
+  echo "##########################################################################################################"
 fi
+
