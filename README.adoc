@@ -54,6 +54,47 @@ access.
   (in the mounting options in the pod), but in between these there is a random uuid we can't know beforehand. +
 This breaks predefined setups and scripts.
 
+=== Traefik IngressRoute over default Ingress definitions
+
+* K3s comes with Traefik as Ingress controller by default.
+* The default Ingress controller in the outside world is nginx.
+* Traefik is well known to FAF since we use it as revers proxy in our faf-stack extensively
+* Traefik offers support for
+** classic Ingress definitions, but requires ingress annotations to use more advanced features (similar to Traefik labels in our current docker-compose.yml)
+** custom IngressRoute definitions which maps the exact Traefik feature set into a yaml format (no annotations required)
+
+We have to select which resource type we use and we should stick to it consistently. As always it's a tradeoff:
+
+* Pro classic Ingress
+** Class ingress is stable by (not so long) now, while Traefik IngressRoutes are still marked as alpha (yet we use Traefik for quite a while and there were rarely changes even from 1.x to 2.x)
+** Classic Ingress is well-known syntax and understood by most external K8s users. So the entry barrier for external contributions is lower. However a lot of functionality would hide behind the Traefik annotations which would still need people to learn it to understand it all.
+** Using classic ingress would allow us to swap out Traefik anytime and still have a mostly working setup
+* Pro Traefik IngressRoute
+** We (the FAF responsible Ops guys) see Traefik as superior compared to Nginx (and moved from Nginx to Traefik as reversy proxy years ago)
+*** Thus we do not expect moving back
+** We have an existing stack we need to migrate 1:1
+** Since we use Traefik features anyway using the IngressRoute reduces the overall yaml complexity as we do not split logic and annotations
+** Traefik syntax seems easier to understand than regular Ingress, so using Traefik syntax might lower the barrier for external contributors who never used classic Ingress.
+
+**Decision:** Pending. Needs evaluation together with certificate management.
+
+
+=== Certificate management & Let's encrypt
+
+* We could run for Traefik certificate resolvers or use cert-manager
+
+* Cert-Manager may not work with Traefik specific IngressRoutes (Needs investigation)
+* Traefik internal let's encrypt resolver stores certificates somewhere on disk
+** The easiest approach is a temp file
+*** This only works with a single Traefik pod in single node cluster
+*** On each restart Traefik would re-issue all certificates at once which might hit Let's Encrypt limits
+** More sophisticate approach is storing the certificates in a persistent volume
+*** In our k3s setup this still restricts us to single-node cluster (but that it implicit anyway, see volume management)
+*** Once we have full Cloudflare access, we can do Cloudflare DNS challenge using a Cloudflare token. Then Traefik does not need to issue one certificate per subdomain. It's unclear though if this makes persisting the certificate obsolete.
+
+**Decision:** Pending. Needs further tests with cert-manager and Cloudflare.
+
+
 === Developer environment & reproducibility
 
 - No service shall go live if its initial configuration or installation can't be scripted.
