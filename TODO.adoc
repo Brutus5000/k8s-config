@@ -1,0 +1,31 @@
+= TO DO - List
+
+* Compare Traefik Let's Encrypt with cert-manager.
+* Think about cluster SSO maybe linked to Github accounts
+* Define a concept for RBAC
+* Investigate usage of helm
+** Configurable host name for prod/test configs
+** Bundled deployments
+* Storage solutions beyond manual
+
+* Add services from faf-stack
+
+[%header,cols="1,1,3"]
+|===
+|Service
+|Status
+|Comment
+
+|MongoDB
+|:heavy_check_mark:
+|
+
+|NodeBB
+|:hourglass:
+|Waiting for https://github.com/NodeBB/NodeBB/pull/10036[this PR] to be merged
+
+|phpBB3 Archive (Nginx)
+|:heavy_check_mark:
+|
+
+|===
