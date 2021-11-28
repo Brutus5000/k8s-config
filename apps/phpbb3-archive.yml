@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: phpbb3-archive
+  name: phpbb3-archive
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: phpbb3-archive
+  template:
+    metadata:
+      labels:
+        app: phpbb3-archive
+    spec:
+      containers:
+        - image: nginx:1.19
+          imagePullPolicy: Always
+          name: phpbb3-archive
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /usr/share/nginx/html
+            - name: config
+              mountPath: /etc/nginx/conf.d/
+      restartPolicy: Always
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: phpbb3-archive-pvc
+        - name: config
+          configMap:
+            name: phpbb3-archive
