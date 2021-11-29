@@ -1,5 +1,8 @@
 = FAF K8S config
 
+This repository implements the link:ARCHITECTURE.md[FAF architecture] in Kubernetes. It's intended to supersede the
+current https://github.com/FAForever/faf-stack[FAF Docker-Compose stack].
+
 == Requirements & tools
 
 * https://k3s.io[k3s] or https://k3d.io/[k3d] installed
