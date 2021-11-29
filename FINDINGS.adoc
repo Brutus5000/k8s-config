@@ -42,6 +42,42 @@ As soon as you save the file, k3s will apply it and Traefik will be restarted. I
     traefik.ingress.kubernetes.io/router.tls.certresolver: default
 ----
 
+=== Setting up SSO cluster login
+
+_This is a tutorial, not an issue that needs reporting._
+
+==== Server side
+
+* Setup a OAuth client on a OIDC provider (FAF uses Ory Hydra) +
+Add the following options to the kube-apiserver (use matching values, watch out for trailing slashes / exact matches):
++
+        --oidc-issuer-url=https://hydra.test.faforever.com/
+        --oidc-client-id=faf-k8s
++
+NixOS servers declare this in
++
+      services.k3s.extraFlags = toString [
+        "--kube-apiserver-arg=oidc-issuer-url=https://hydra.test.faforever.com/"
+        "--kube-apiserver-arg=oidc-client-id=faf-k8s"
+      ];
+
+* Create a ClusterRoleBinding such as
++
+  kubectl create clusterrolebinding oidc-cluster-admin --clusterrole=cluster-admin --user='https://hydra.test.faforever.com/#76365'
+
+** The user identifier is built out of `<issuer-url>#<OAuth ID token subject>`. In the example above `76365` is a FAF user id.
+
+==== Client side
+* Install kubelogin
+* run setup e.g.
++
+  kubectl oidc-login setup \
+  --oidc-issuer-url=https://hydra.test.faforever.com/ \
+  --oidc-client-id=faf-k8s \
+  --oidc-client-secret=<secret>
+
+* Follow the steps printed after setup was finished. It will explain how to set up kubectl for the cluster.
+
 == NodeBB
 
 _Not all of these findings are reported upstream yet._
@@ -56,4 +92,4 @@ Error: EROFS: read-only file system, open '/usr/src/app/config.json'
 ----
 1. Workaround: Build the `config.json` via script from an init container out of configmap and secret values.
 1. Installing and activating plugins inside the container cannot be done before startup of the container and requires to build processes. +
-  We made https://github.com/NodeBB/NodeBB/pull/10036[pull request #10036] to improve this.
+We made https://github.com/NodeBB/NodeBB/pull/10036[pull request #10036] to improve this.
