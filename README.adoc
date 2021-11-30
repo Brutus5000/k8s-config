@@ -48,11 +48,12 @@ access.
 
 === Volume management
 
-* We'll run with manual managed persistent volumes and claims, because we need predictable paths. +
+* We'll run with manual managed persistent volumes and claims, because we need predictable paths.
 * Predictable paths are a necessity for managing the volumes with ZFS. +
 * Using k3s local-path-provisioner we can define the prefix (in the configmap `local-path-config`) and the suffix
   (in the mounting options in the pod), but in between these there is a random uuid we can't know beforehand. +
 This breaks predefined setups and scripts.
+* K8s builtin local-path with node affinity ensures all data of a volume can be stored on a selected node (the node label with storage-id=main-01)
 
 === Traefik IngressRoute over default Ingress definitions
 

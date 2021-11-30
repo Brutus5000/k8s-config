@@ -58,7 +58,7 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: nodebb-data-pvc
+            claimName: nodebb-pvc
         - name: pod-config
           emptyDir: {}
         - name: config-script
