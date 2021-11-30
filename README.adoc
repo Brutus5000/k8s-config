@@ -3,6 +3,8 @@
 == Requirements & tools
 
 * https://k3s.io[k3s] or https://k3d.io/[k3d] installed
+** The main node must run with some arguments: +
+`--node-label=storage-id=main-01` (determines the main storage node)
 * https://stedolan.github.io/jq/[jq] installed (required for scripts)
 * *Recommended:* A k8s ui such as https://k8slens.dev/[Lens] (GUI) or https://k9scli.io/[k9s] (CLI)
 
@@ -96,7 +98,19 @@ We have to select which resource type we use and we should stick to it consisten
 **Decision:** Pending. Needs further tests with cert-manager and Cloudflare.
 
 
+=== User access and RBAC
+
+* We want to give access to multiple people with potentially different permissions.
+* Handing out service account certificates is quite annoying.
+* An SSO login via OIDC is preferred and supported by K8s / K3s.
+** The preferred identity provider would be Github as all developers are there and its outside the system itself. Unfortunately Gitlab  only supports OAuth2 and not OIDC.
+** Google accounts would be an alternative, but we don't want to force people on Google.
+** We'll use FAFs custom login instead.
+** As a fallback (in case the FAF login is broken) we still have the main service account.
+* RBAC t.b.d.
+
 === Developer environment & reproducibility
 
 - No service shall go live if its initial configuration or installation can't be scripted.
+- Everything must be runnable on a single-node cluster.
 - Scripts shall be idempotent / re-runnable without fatal consequences. We will use k8s annotations to keep track of the state.
