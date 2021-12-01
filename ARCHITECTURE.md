@@ -4,7 +4,7 @@ FAF is a complex landscape. We try to draw the complete picture here.
 
 **Legend**
 
-![Legend](https://g.gravizo.com/source/legend_mark?https%3A%2F%2Fraw.githubusercontent.com%2FBrutus5000%2Fk8s-config%2Fgraphviz%2FARCHITECTURE.md)
+![Legend](https://g.gravizo.com/source/legend_mark?https%3A%2F%2Fraw.githubusercontent.com%2FBrutus5000%2Fk8s-config%2Fmain%2FARCHITECTURE.md)
 <details><summary></summary>
 legend_mark
 digraph Legend {
