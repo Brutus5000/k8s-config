@@ -18,12 +18,12 @@ spec:
         app: mariadb
     spec:
       containers:
-      - env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: banana # TODO: Put to secret
-        image: mariadb:10.6
+      - image: mariadb:10.6
         imagePullPolicy: IfNotPresent
         name: mariadb
+        envFrom:
+          - secretRef:
+              name: mariadb
         ports:
         - containerPort: 3306
           protocol: TCP

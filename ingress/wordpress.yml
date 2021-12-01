@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: wordpress
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`direct.${FAF_BASE_DOMAIN}`)
+      kind: Rule
+      services:
+        - name: wordpress
+          port: 80
+  tls:
+    certResolver: default
