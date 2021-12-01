@@ -22,17 +22,3 @@ spec:
 
 ---
 
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mongodb-pvc
-  labels:
-    app: mongodb
-spec:
-  storageClassName: local-fast-storage
-  volumeName: mongodb-pv
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi

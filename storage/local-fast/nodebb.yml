@@ -23,21 +23,3 @@ spec:
               operator: In
               values:
                 - main-01
-
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: nodebb-pvc
-  labels:
-    app: nodebb
-spec:
-  storageClassName: local-fast-storage
-  volumeName: nodebb-pv
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 10Gi

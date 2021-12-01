@@ -1,18 +1,3 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: nodebb
-  labels:
-    app: nodebb
-spec:
-  selector:
-    app: nodebb
-  ports:
-    - port: 4567
-      targetPort: 4567
-
----
-
 #apiVersion: traefik.containo.us/v1alpha1
 #kind: IngressRoute
 #metadata:

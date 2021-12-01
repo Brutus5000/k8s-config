@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodebb
+  labels:
+    app: nodebb
+spec:
+  selector:
+    app: nodebb
+  ports:
+    - port: 4567
+      targetPort: 4567
