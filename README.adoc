@@ -82,23 +82,24 @@ We have to select which resource type we use and we should stick to it consisten
 ** Since we use Traefik features anyway using the IngressRoute reduces the overall yaml complexity as we do not split logic and annotations
 ** Traefik syntax seems easier to understand than regular Ingress, so using Traefik syntax might lower the barrier for external contributors who never used classic Ingress.
 
-**Decision:** Pending. Needs evaluation together with certificate management.
+**Decision:** We'll use Traefik IngressRoutes.
 
 
 === Certificate management & Let's encrypt
 
 * We could run for Traefik certificate resolvers or use cert-manager
+* Cert-Manager works with classic Ingress routes and Traefik specific IngressRoutes
+** Needs additional software
+** Has a short support cycle (6 months per point release)
+** => More maintenance overhead
+* Traefik internal let's encrypt resolver needs to be manually configured on the node
+** It stores certificates somewhere on disk
+** The easiest approach is a persistent volume on the main storage node
+*** This effectively restricts Traefik to run on a single node
+** More sophisticate approach is storing the certificates in a persistent remote / network volume
+** Once we have full Cloudflare access, we can do Cloudflare DNS challenge using a Cloudflare token. Then Traefik does not need to issue one certificate per subdomain. It's unclear though if this makes persisting the certificate obsolete.
 
-* Cert-Manager may not work with Traefik specific IngressRoutes (Needs investigation)
-* Traefik internal let's encrypt resolver stores certificates somewhere on disk
-** The easiest approach is a temp file
-*** This only works with a single Traefik pod in single node cluster
-*** On each restart Traefik would re-issue all certificates at once which might hit Let's Encrypt limits
-** More sophisticate approach is storing the certificates in a persistent volume
-*** In our k3s setup this still restricts us to single-node cluster (but that it implicit anyway, see volume management)
-*** Once we have full Cloudflare access, we can do Cloudflare DNS challenge using a Cloudflare token. Then Traefik does not need to issue one certificate per subdomain. It's unclear though if this makes persisting the certificate obsolete.
-
-**Decision:** Pending. Needs further tests with cert-manager and Cloudflare.
+**Decision:** We'll use Traefik as long as we don't run into any problems, since it seems less maintenance buurden. Cert-manager can still be introduced later if required.
 
 
 === User access and RBAC

@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nodebb
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`forum.${FAF_BASE_DOMAIN}`)
+      kind: Rule
+      services:
+        - name: nodebb
+          port: 4567
+  tls:
+    certResolver: default

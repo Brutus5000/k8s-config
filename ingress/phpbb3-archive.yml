@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: phpbb3-archive
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`forums.${FAF_BASE_DOMAIN}`)
+      kind: Rule
+      services:
+        - name: phpbb3-archive
+          port: 80
+  tls:
+    certResolver: default
