@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: unitdb
+  name: unitdb
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: unitdb
+  template:
+    metadata:
+      labels:
+        app: unitdb
+    spec:
+      containers:
+        - image: faforever/faf-unitdb:v1.3.1
+          imagePullPolicy: IfNotPresent
+          name: unitdb
+          envFrom:
+            - configMapRef:
+                name: unitdb
+            - secretRef:
+                name: unitdb
+          lifecycle:
+            postStart:
+              # httpGet doesn't work. For some reason Kubernetes always uses https, even if schema is declared as HTTP
+              exec:
+                command:
+                - sh
+                - "-c"
+                - |
+                  sleep 5 && curl "http://localhost/update.php?token=${UNITDB_UPGRADE_SECRET}&version=latest"
+      restartPolicy: Always

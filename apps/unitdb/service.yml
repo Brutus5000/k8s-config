@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: unitdb
+  labels:
+    app: unitdb
+spec:
+  selector:
+    app: unitdb
+  ports:
+    - port: 80
+      targetPort: 80

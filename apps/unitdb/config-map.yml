@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unitdb
+  labels:
+    app: unitdb
+data:
+  TEMPLATE_NGINX_HTML: "0"
+  UNITDB_FILES_API_URL_FORMAT: https://api.faforever.com/featuredMods/0/files/%s

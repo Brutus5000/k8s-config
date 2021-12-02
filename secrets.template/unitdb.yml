@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: unitdb
+  labels:
+    app: unitdb
+data:
+  UNITDB_UPGRADE_SECRET: YmFuYW5h
+type: Opaque
