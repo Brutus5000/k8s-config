@@ -16,7 +16,7 @@ spec:
         app: unitdb
     spec:
       containers:
-        - image: faforever/faf-unitdb:v1.3.1
+        - image: faforever/faf-unitdb:v1.3.3
           imagePullPolicy: IfNotPresent
           name: unitdb
           envFrom:
