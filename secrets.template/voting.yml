@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: voting
+  labels:
+    app: voting
+data:
+  CLIENT_SECRET: YmFuYW5h
+  SESSION_SECRET: YmFuYW5h
+type: Opaque

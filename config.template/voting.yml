@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: voting
+  labels:
+    app: voting
+data:
+  CLIENT_ID: faf-voting
+  CALLBACK_URL: https://voting.faforever.org/auth
+  NODE_ENV: production
+  API_URL: https://api.faforever.com
+  OAUTH_URL: https://hydra.faforever.com
+  HOST: https://voting.faforever.org
