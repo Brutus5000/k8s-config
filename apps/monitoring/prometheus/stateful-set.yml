@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: monitoring
+  labels:
+    app: prometheus
+  name: prometheus
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1  # Never scale more than 1 replica. This will most probably corrupt the data.
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: prometheus
+  serviceName: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      initContainers:
+        - name: set-disk-permissions
+          image: busybox:stable
+          command: [ "sh", "-c", "chown -R 1000:2000 /data; chmod -R 777 /data" ]
+          volumeMounts:
+            - mountPath: /data
+              name: prometheus-pvc
+      containers:
+      - envFrom:
+          - configMapRef:
+              name: prometheus
+          - secretRef:
+              name: prometheus
+        image: prom/prometheus
+        args:
+          - "--config.file=/etc/prometheus/prometheus.yml"
+          - "--storage.tsdb.retention.time=12w"
+          - "--storage.tsdb.retention.size=10GB"
+          - "--storage.tsdb.path=/data"
+        imagePullPolicy: Always
+        name: prometheus
+        ports:
+        - containerPort: 9090
+          protocol: TCP
+        volumeMounts:
+          - name: prometheus-config-volume
+            mountPath: /etc/prometheus/
+          - name: prometheus-pvc
+            mountPath: /data
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 4G
+          requests:
+            cpu: 100m
+            memory: 200M
+      volumes:
+        - name: prometheus-config-volume
+          configMap:
+            defaultMode: 420
+            name: prometheus
+        - name: prometheus-pvc
+          emptyDir: {}

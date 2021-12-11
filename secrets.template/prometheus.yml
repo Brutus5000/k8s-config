@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: prometheus
+  labels:
+    app: prometheus
+data:
+  ca.crt: YmFuYW5h
+type: Opaque
