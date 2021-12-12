@@ -1,16 +1,20 @@
+# TODO: This volume should move to NFS so it can run on any node
+# TODO: Split these down into logical chunks (replays, featured mods, maps, mods, ...)
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: mongodb-pv
+  name: faf-content-pv
+  labels:
+    app: faf-content
 spec:
   capacity:
-    storage: 10Gi
+    storage: 800Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-fast-storage
   local:
-    path: /opt/faf/data/mongodb
+    path: /opt/faf/data/content
   nodeAffinity:
     required:
       nodeSelectorTerms:

@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: faf-api
+  labels:
+    app: faf-api
+data:
+  AVATAR_ALLOWED_FILE_EXTENSIONS: png,gif
+  AVATAR_DOWNLOAD_URL_FORMAT: http://localhost/avatars/%s
+  AVATAR_IMAGE_HEIGHT: "20"
+  AVATAR_IMAGE_WIDTH: "40"
+  AVATAR_MAX_SIZE_BYTES: "4096"
+  AVATAR_TARGET_DIRECTORY: /content/avatars
+  ACTIVATION_URL_FORMAT: http://localhost:8020/account/activate?username=%s&token=%s
+  API_PROFILE: dev
+  CLAN_WEBSITE_URL_FORMAT: http://localhost:8096/clan/%s
+  DATABASE_ADDRESS: mariadb
+  DATABASE_NAME: faf
+  DATABASE_USERNAME: faf-api
+  LEAGUE_DATABASE_ADDRESS: mariadb
+  LEAGUE_DATABASE_NAME: faf-league
+  LEAGUE_DATABASE_USERNAME: faf-league-service
+  EMAIL_FROM_ADDRESS: admin@localhost
+  EMAIL_FROM_NAME: Your localhost FAF team
+  FEATURED_MOD_BIREUS_URL_FORMAT: http://localhost/bireus/%s
+  FEATURED_MOD_URL_FORMAT: http://localhost/featured_mods/%s/%s
+  FEATURED_MODS_TARGET_DIRECTORY: /content/legacy-featured-mod-files
+  FORGED_ALLIANCE_EXE_PATH: /legacy-featured-mod-files/updates_faf_files/ForgedAlliance.exe
+  GITHUB_DEPLOYMENT_ENVIRONMENT: development
+  JAVA_TOOL_OPTIONS: -Xms256m -Xmx256m
+  JWT_PRIVATE_KEY_PATH: /pki/secret.key
+  JWT_PUBLIC_KEY_PATH: /pki/public.key
+  MAP_DOWNLOAD_URL_FORMAT: http://localhost/maps/%s
+  MAP_LARGE_PREVIEWS_URL_FORMAT: http://localhost/maps/previews/large/%s
+  MAP_PREVIEW_PATH_LARGE: /content/maps/previews/large
+  MAP_PREVIEW_PATH_SMALL: /content/maps/previews/small
+  MAP_SMALL_PREVIEWS_URL_FORMAT: http://localhost/maps/previews/small/%s
+  MAP_UPLOAD_PATH: /content/maps
+  MAUTIC_BASE_URL: http://faf-mautic/api
+  MAUTIC_CLIENT_ID: faf-java-api
+  MAUTIC_ACCESS_TOKEN_URL: http://faf-mautic/oauth/v2/token
+  #MAIL_HOST: faf-postal
+  #MAIL_PORT: 25
+  #MAIL_USERNAME: faforever/faf-mautic
+  #MAIL_PASSWORD: banana
+  MOD_DOWNLOAD_URL_FORMAT: http://localhost/mods/%s
+  MOD_PREVIEW_URL_FORMAT: http://localhost/mods/thumbs/%s
+  MOD_TARGET_DIRECTORY: /content/mods
+  MOD_THUMBNAIL_TARGET_DIRECTORY: /content/mods/thumbs
+  PASSWORD_RESET_EMAIL_BODY: "Dear {0},\n\na new password was requested for your user.\nIf you did not request a new password, please delete this email.\n\nOtherwise please click on the following link to reset your password:\n-----------------------\n{1}\n-----------------------\n\nThanks,\n-- The FA Forever team"
+  PASSWORD_RESET_EMAIL_SUBJECT: FAForever - Password reset
+  PASSWORD_RESET_URL_FORMAT: http://localhost:8000/account/confirmPasswordReset?username=%s&token=%s
+  REGISTRATION_EMAIL_BODY: "Dear {0},\n\nwelcome to the FAForever community.\nPlease visit the following link to activate your FAF account:\n\n-----------------------\n{1}\n-----------------------\n\nThanks,\n-- The FA Forever team"
+  REGISTRATION_EMAIL_SUBJECT: FAForever - Account validation
+  REPLAY_DOWNLOAD_URL_FORMAT: http://localhost/replays/%s
+  REPOSITORIES_DIRECTORY: /repositories
+  SPRING_BOOT_ADMIN_CLIENT_ENABLED: "false"
+  SPRING_BOOT_ADMIN_CLIENT_INSTANCE_SERVICE_URL: http://faf-java-api:8010
+  SPRING_BOOT_ADMIN_CLIENT_INSTANCE_MANAGEMENTBASEURL: http://faf-java-api:8011
+  SPRING_BOOT_ADMIN_CLIENT_URL: http://faf-spring-boot-admin:1111
+  STEAM_REALM: http://localhost
+  STEAM_LINK_ERROR_URL: http://localhost:8020/error?code=%s
+  STEAM_LINK_REDIRECT_URL_FORMAT: http://localhost:8010/users/linkToSteam?token=%s
+  STEAM_LINK_SUCCESS_URL: http://localhost:8020/linked_to_steam
+  STEAM_PASSWORD_RESET_REDIRECT_URL_FORMAT: http://localhost:8010/users/requestPasswordResetViaSteam
+  TUTORIAL_THUMBNAIL_URL_FORMAT: http://localhost:8091/faf/tutorials/thumbs/%s
+  EXE_UPLOAD_BETA_PATH: /content/legacy-featured-mod-files/updates_fafbeta_files
+  EXE_UPLOAD_DEVELOP_PATH: /content/legacy-featured-mod-files/updates_fafdevelop_files

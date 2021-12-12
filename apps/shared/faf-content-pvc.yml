@@ -1,0 +1,13 @@
+# TODO: Split these down into logical chunks (replays, featured mods, maps, mods, ...)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: faf-content-pvc
+spec:
+  storageClassName: local-fast-storage
+  volumeName: faf-content-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 800Gi

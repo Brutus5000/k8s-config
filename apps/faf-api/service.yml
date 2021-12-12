@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: faf-api
+  labels:
+    app: faf-api
+spec:
+  selector:
+    app: faf-api
+  ports:
+    - name: consumer-port
+      port: 8010
+      targetPort: 8010
+    - name: management-port
+      port: 8011
+      targetPort: 8011

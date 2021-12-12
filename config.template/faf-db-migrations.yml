@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: faf-db-migrations
+  labels:
+    app: faf-db-migrations
+data:
+  FLYWAY_URL: jdbc:mysql://mariadb/faf?useSSL=false
+  FLYWAY_USER: root
+  JUST_FOR_TESTING_DB_NAME: faf # TODO: Remove

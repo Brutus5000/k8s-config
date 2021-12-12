@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: faf-db-migrations
+  labels:
+    app: faf-db-migrations
+data:
+  FLYWAY_PASSWORD: YmFuYW5h
+type: Opaque

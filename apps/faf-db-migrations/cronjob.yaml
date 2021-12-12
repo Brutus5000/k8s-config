@@ -1,0 +1,30 @@
+kind: CronJob
+apiVersion: batch/v1
+metadata:
+  name: faf-db-migrations
+spec:
+  # Disabled because triggered manually
+  schedule: "0 0 31 2 *"
+  suspend: true
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    metadata:
+      labels:
+        app: faf-db-migrations
+      annotations:
+        prometheus.io/scrape: 'false'
+    spec:
+      template:
+        spec:
+          containers:
+            - name: faf-db-migrations
+              image: faforever/faf-db-migrations:v122.2
+              args:
+                - migrate
+              envFrom:
+                - configMapRef:
+                    name: faf-db-migrations
+                - secretRef:
+                    name: faf-db-migrations
+              imagePullPolicy: Always
+          restartPolicy: Never

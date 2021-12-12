@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: faf-api
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`api.${FAF_BASE_DOMAIN}`)
+      kind: Rule
+      services:
+        - name: faf-api
+          port: 8010
+  tls:
+    certResolver: default

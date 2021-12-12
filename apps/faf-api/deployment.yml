@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faf-api
+  labels:
+    app: faf-api
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: faf-api
+  template:
+    metadata:
+      labels:
+        app: faf-api
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8011'
+        prometheus.io/path: '/actuator/prometheus'
+    spec:
+      containers:
+        - image: faforever/faf-java-api:v2.17.1
+          imagePullPolicy: Always
+          name: faf-api
+          envFrom:
+            - configMapRef:
+                name: faf-api
+            - secretRef:
+                name: faf-api
+          ports:
+            - containerPort: 8010
+            - name: management-port
+              containerPort: 8011
+          volumeMounts:
+            - name: faf-api-pki
+              mountPath: /pki
+            - name: faf-content-pvc
+              mountPath: /content
+          startupProbe:
+            httpGet:
+              port: management-port
+              path: /actuator/health
+            initialDelaySeconds: 10
+            failureThreshold: 30
+            periodSeconds: 3
+          livenessProbe:
+            httpGet:
+              port: management-port
+              path: /actuator/health
+            failureThreshold: 3
+            periodSeconds: 10
+      restartPolicy: Always
+      volumes:
+        - name: faf-api-pki
+          projected:
+            sources:
+              - secret:
+                  name: faf-api
+                  items:
+                    - key: public.key
+                      path: public.key
+                    - key: secret.key
+                      path: secret.key
+            defaultMode: 440
+        - name: faf-content-pvc
+          persistentVolumeClaim:
+            claimName: faf-content-pvc
+
+
+

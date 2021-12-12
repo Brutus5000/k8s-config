@@ -35,4 +35,8 @@ create_user_with_db() {
 SQL_SCRIPT
 }
 
+# serviceName, database, username, password, dbOptions
 create_user_with_db wordpress WORDPRESS_DB_NAME WORDPRESS_DB_USER WORDPRESS_DB_PASSWORD
+create_user_with_db faf-api DATABASE_NAME DATABASE_USERNAME DATABASE_PASSWORD
+create_user_with_db faf-api LEAGUE_DATABASE_NAME LEAGUE_DATABASE_USERNAME LEAGUE_DATABASE_PASSWORD
+create_user_with_db faf-db-migrations JUST_FOR_TESTING_DB_NAME FLYWAY_USER FLYWAY_PASSWORD
