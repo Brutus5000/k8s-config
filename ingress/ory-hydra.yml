@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ory-hydra
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`hydra.${FAF_BASE_DOMAIN}`)
+      kind: Rule
+      services:
+        - name: ory-hydra
+          port: 4444
+  tls:
+    certResolver: default

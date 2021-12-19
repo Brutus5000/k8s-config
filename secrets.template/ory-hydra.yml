@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ory-hydra
+  labels:
+    app: ory-hydra
+stringData:
+  DB_PASSWORD: "banana"
+  SECRETS_SYSTEM: "bananapineapplepizza"
+  SECRETS_COOKIE: "bananapineapplepizza"
+type: Opaque

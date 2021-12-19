@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ory-hydra
+  labels:
+    app: ory-hydra
+spec:
+  selector:
+    app: ory-hydra
+  ports:
+    - name: public-port
+      port: 4444
+      targetPort: 4444
+    - name: admin-port
+      port: 4445
+      targetPort: 4445

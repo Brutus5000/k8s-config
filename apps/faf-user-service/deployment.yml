@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faf-user-service
+  labels:
+    app: faf-user-service
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: faf-user-service
+  template:
+    metadata:
+      labels:
+        app: faf-user-service
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8081'
+        prometheus.io/path: '/actuator/prometheus'
+    spec:
+      containers:
+        - image: faforever/faf-user-service:master
+          imagePullPolicy: Always
+          name: faf-user-service
+          envFrom:
+            - configMapRef:
+                name: faf-user-service
+            - secretRef:
+                name: faf-user-service
+          ports:
+            - containerPort: 8080
+            - name: management-port
+              containerPort: 8081
+          startupProbe:
+            httpGet:
+              port: management-port
+              path: /actuator/health
+            failureThreshold: 10
+            periodSeconds: 3
+          livenessProbe:
+            httpGet:
+              port: management-port
+              path: /actuator/health
+            failureThreshold: 3
+            periodSeconds: 10
+      restartPolicy: Always
+
+

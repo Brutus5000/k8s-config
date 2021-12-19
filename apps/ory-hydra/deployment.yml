@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ory-hydra
+  labels:
+    app: ory-hydra
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: ory-hydra
+  template:
+    metadata:
+      labels:
+        app: ory-hydra
+      annotations:
+        prometheus.io/scrape: 'false'
+    spec:
+      initContainers:
+        # Ory Hydra works best with a mounted config file therefore we copy it from secret into an empty directory
+        - name: setup
+          image: brutus5000/alpine-envsubst:3
+          imagePullPolicy: Always
+          command: ['sh', '-c', "/config/build-config.sh"]
+          envFrom:
+            - configMapRef:
+                name: ory-hydra
+            - secretRef:
+                name: ory-hydra
+          volumeMounts:
+            - name: pod-config
+              mountPath: /pod
+            - name: config-template
+              mountPath: /config/hydra.yaml.template
+              subPath: hydra.yaml.template
+            - name: config-script
+              mountPath: /config/build-config.sh
+              subPath: build-config.sh
+      containers:
+        - image: oryd/hydra:v1.10.7
+          imagePullPolicy: Always
+          name: ory-hydra
+          envFrom:
+            - configMapRef:
+                name: ory-hydra
+            - secretRef:
+                name: ory-hydra
+          ports:
+            - containerPort: 4444
+            - containerPort: 4445
+          args: [ "serve", "all", "-c", "/pod/hydra.yaml", "--dangerous-force-http"]
+          volumeMounts:
+            - name: pod-config
+              mountPath: /pod
+      restartPolicy: Always
+      volumes:
+        - name: pod-config
+          emptyDir: {}
+        - name: config-script
+          configMap:
+            name: ory-hydra
+            defaultMode: 077
+        - name: config-template
+          configMap:
+            name: ory-hydra

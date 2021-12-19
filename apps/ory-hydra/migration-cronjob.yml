@@ -1,0 +1,67 @@
+kind: CronJob
+apiVersion: batch/v1
+metadata:
+  name: ory-hydra-migration
+  labels:
+    app: ory-hydra-migration
+spec:
+  # Disabled because triggered manually
+  schedule: "0 0 31 2 *"
+  suspend: true
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    metadata:
+      labels:
+        app: ory-hydra-migration
+      annotations:
+        prometheus.io/scrape: 'false'
+    spec:
+      template:
+        spec:
+          initContainers:
+            # Ory Hydra works best with a mounted config file therefore we copy it from secret into an empty directory
+            - name: setup
+              image: brutus5000/alpine-envsubst:3
+              imagePullPolicy: Always
+              command: ['sh', '-c', "/config/build-config.sh"]
+              envFrom:
+                - configMapRef:
+                    name: ory-hydra
+                - secretRef:
+                    name: ory-hydra
+              volumeMounts:
+                - name: pod-config
+                  mountPath: /pod
+                - name: config-template
+                  mountPath: /config/hydra.yaml.template
+                  subPath: hydra.yaml.template
+                - name: config-script
+                  mountPath: /config/build-config.sh
+                  subPath: build-config.sh
+          containers:
+            - image: oryd/hydra:v1.10.7
+              imagePullPolicy: Always
+              name: ory-hydra
+              envFrom:
+                - configMapRef:
+                    name: ory-hydra
+                - secretRef:
+                    name: ory-hydra
+              ports:
+                - containerPort: 4444
+                - containerPort: 4445
+              args: [ "migrate", "sql", "-c", "/pod/hydra.yaml", "--read-from-env", "--yes"]
+              volumeMounts:
+                - name: pod-config
+                  mountPath: /pod
+          restartPolicy: Never
+          volumes:
+            - name: pod-config
+              emptyDir: {}
+            - name: config-script
+              configMap:
+                name: ory-hydra
+                defaultMode: 077
+            - name: config-template
+              configMap:
+                name: ory-hydra

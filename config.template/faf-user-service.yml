@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: faf-user-service
+  labels:
+    app: faf-user-service
+data:
+  PASSWORD_RESET_URL: https://www.${FAF_BASE_DOMAIN}/account/password/reset
+  REGISTER_ACCOUNT_URL: https://www.${FAF_BASE_DOMAIN}/account/register
+  FAILED_LOGIN_ACCOUNT_THRESHOLD: "5"
+  FAILED_LOGIN_ATTEMPT_THRESHOLD: "10"
+  FAILED_LOGIN_THROTTLING_MINUTES: "5"
+  FAILED_LOGIN_DAYS_TO_CHECK: "1"
+  HYDRA_ISSUER: https://hydra.${FAF_BASE_DOMAIN}.com/
+  HYDRA_BASE_ADMIN_URL: http://faf-ory-hydra:4445
+  DB_R2DBC_URL: r2dbc:pool:mysql://mariadb:3306/faf?ssl=false
+  DB_NAME: faf
+  DB_USERNAME: faf-user-service

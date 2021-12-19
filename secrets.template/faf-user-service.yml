@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: faf-user-service
+  labels:
+    app: faf-user-service
+data:
+  DB_PASSWORD: YmFuYW5h
+type: Opaque
