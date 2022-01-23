@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: faf-replay-server
+  labels:
+    app: faf-replay-server
+data:
+  RS_CONFIG_FILE: "/pod/config.yml"
+  DB_HOST: "mariadb"
+  DB_NAME: "faf"
+  DB_USERNAME: "faf-replay-server"
+  config.yml.template: |
+    rs:
+      log_level: INFO
+      server:
+        port: "15000"
+        prometheus_port: "8011"
+        connection_header_read_timeout: "21600"
+        connection_linger_time: "60"
+      db:
+        host: "${DB_HOST}"
+        port: "3306"
+        user: "${DB_USERNAME}"
+        name: "${DB_NAME}"
+      storage:
+        vault_path: /content/replays
+      replay:
+        forced_end_time: "18000"
+        grace_period: "30"
+        delay:
+          replay_delay: "300"
+          update_interval: "1"
+        merge:
+          desired_quorum: "2"
+          stream_comparison_cutoff: "2048"
+  # Configuration shell script
+  build-config.sh: |
+    #!/bin/sh
+    cat /config/config.yml.template | envsubst > /pod/config.yml

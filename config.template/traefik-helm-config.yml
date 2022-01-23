@@ -1,0 +1,21 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    additionalArguments:
+      - "--certificatesresolvers.default.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.default.acme.httpchallenge=true"
+      - "--certificatesresolvers.default.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.default.acme.email=brutus5000@gmx.net"
+      - "--certificatesresolvers.default.acme.storage=/data/acme.json"
+    ports:
+      replay-server:
+        port: 15000
+        expose: true
+        exposedPort: 15000 
+        protocol: TCP
+        tls:
+          enabled: false

@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: faf-replay-server
+  name: faf-replay-server
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1  # Never scale more than 1 replica. This will most probably corrupt the data.
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: faf-replay-server
+  serviceName: faf-replay-server
+  template:
+    metadata:
+      labels:
+        app: faf-replay-server
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8011'
+        prometheus.io/path: '/'
+    spec:
+      initContainers:
+        # Ory Hydra works best with a mounted config file therefore we copy it from secret into an empty directory
+        - name: setup
+          image: brutus5000/alpine-envsubst:3
+          imagePullPolicy: Always
+          command: ['sh', '-c', "/config/build-config.sh"]
+          envFrom:
+            - configMapRef:
+                name: faf-replay-server
+            - secretRef:
+                name: faf-replay-server
+          volumeMounts:
+            - name: pod-config
+              mountPath: /pod
+            - name: config-template
+              mountPath: /config/config.yml.template
+              subPath: config.yml.template
+            - name: config-script
+              mountPath: /config/build-config.sh
+              subPath: build-config.sh
+      containers:
+      - name: faf-replay-server
+        image: faforever/faf-aio-replayserver:1.1.4
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - configMapRef:
+              name: faf-replay-server
+          - secretRef:
+              name: faf-replay-server
+        ports:
+        - containerPort: 15000
+          protocol: TCP
+        volumeMounts:
+          - name: pod-config
+            mountPath: /pod
+          - name: faf-content-pvc
+            mountPath: /content
+      restartPolicy: Always
+      volumes:
+      - name: faf-content-pvc
+        persistentVolumeClaim:
+          claimName: faf-content-pvc
+      - name: pod-config
+        emptyDir: {}
+      - name: config-script
+        configMap:
+          name: faf-replay-server
+          defaultMode: 077
+      - name: config-template
+        configMap:
+          name: faf-replay-server
