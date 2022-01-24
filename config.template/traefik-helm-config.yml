@@ -12,6 +12,13 @@ spec:
       - "--certificatesresolvers.default.acme.email=brutus5000@gmx.net"
       - "--certificatesresolvers.default.acme.storage=/data/acme.json"
     ports:
+      lobby-server:
+        port: 8002
+        expose: true
+        exposedPort: 8002 
+        protocol: TCP
+        tls:
+          enabled: false
       replay-server:
         port: 15000
         expose: true

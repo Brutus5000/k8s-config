@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`forum.${FAF_BASE_DOMAIN}`)
+    - match: Host(`forum.##FAF_BASE_DOMAIN##`)
       kind: Rule
       services:
         - name: nodebb

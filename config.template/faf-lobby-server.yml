@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: faf-lobby-server
+  labels:
+    app: faf-lobby-server
+data:
+  CONFIGURATION_FILE: "/pod/config.yml"
+  DB_HOST: "mariadb"
+  DB_NAME: "faf"
+  DB_USERNAME: "faf-lobby-server"
+  config.yml.template: |
+    CONFIGURATION_REFRESH_TIME: 60
+    LOG_LEVEL: "DEBUG"
+
+    DB_SERVER: "${DB_HOST}"
+    DB_LOGIN: "${DB_USERNAME}"
+    DB_PASSWORD: "${DB_PASSWORD}"
+    DB_NAME: "${DB_NAME}"
+
+    MQ_SERVER: "rabbitmq"
+    MQ_PORT: 5672
+    MQ_VHOST: "/faf-core"
+    MQ_USER: "faf-lobby-server"
+    MQ_PASSWORD: "${RABBITMQ_PASSWORD}"
+    MQ_EXCHANGE_NAME: "faf-lobby"
+
+    ENABLE_METRICS: true
+
+    COTURN_HOSTS: ["test.faforever.com"]
+    COTURN_KEYS: ["banana"]
+
+    FAF_POLICY_SERVER_BASE_URL: "http://faf-policy-server:8097"
+
+    FORCE_STEAM_LINK: false
+    # Seconds since epoch
+    FORCE_STEAM_LINK_AFTER_DATE: 0
+
+    QUEUE_POP_TIME_MAX: 60
+  # Configuration shell script
+  build-config.sh: |
+    #!/bin/sh
+    cat /config/config.yml.template | envsubst > /pod/config.yml

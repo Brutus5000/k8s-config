@@ -1,13 +1,13 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: faf-replay-server
+  name: faf-lobby-server
 spec:
   entryPoints:
-    - replay-server
+    - lobby-server
   routes:
     - match: HostSNI(`lobby.##FAF_BASE_DOMAIN##`)
       kind: Rule
       services:
-        - name: faf-replay-server
-          port: 15000
+        - name: faf-lobby-server
+          port: 8002

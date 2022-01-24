@@ -5,7 +5,6 @@ metadata:
   labels:
     app: ory-hydra
 data:
-  FAF_DOMAIN: "supcomhub.org"
   DB_HOST: "mariadb"
   DB_NAME: "hydra"
   DB_USERNAME: "hydra"
@@ -16,9 +15,9 @@ data:
         - ${SECRETS_SYSTEM}
     urls:
       self:
-        issuer: https://hydra.${FAF_DOMAIN}
-      login: https://user.${FAF_DOMAIN}/oauth2/login
-      consent: https://user.${FAF_DOMAIN}/oauth2/consent
+        issuer: https://hydra.##FAF_BASE_DOMAIN##
+      login: https://user.##FAF_BASE_DOMAIN##/oauth2/login
+      consent: https://user.##FAF_BASE_DOMAIN##/oauth2/consent
 
     # Static configuration
     strategies:
@@ -31,4 +30,3 @@ data:
   build-config.sh: |
     #!/bin/sh
     cat /config/hydra.yaml.template | envsubst > /pod/hydra.yaml
-    cat /pod/hydra.yaml

@@ -6,8 +6,8 @@ metadata:
     app: voting
 data:
   CLIENT_ID: faf-voting
-  CALLBACK_URL: https://voting.faforever.org/auth
+  CALLBACK_URL: https://voting.##FAF_BASE_DOMAIN##/auth
   NODE_ENV: production
-  API_URL: https://api.faforever.com
-  OAUTH_URL: https://hydra.faforever.com
-  HOST: https://voting.faforever.org
+  API_URL: https://api.##FAF_BASE_DOMAIN##
+  OAUTH_URL: https://hydra.##FAF_BASE_DOMAIN##
+  HOST: https://voting.##FAF_BASE_DOMAIN##

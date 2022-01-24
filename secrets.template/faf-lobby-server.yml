@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: faf-lobby-server
+  labels:
+    app: faf-lobby-server
+stringData:
+  DB_PASSWORD: "banana"
+type: Opaque

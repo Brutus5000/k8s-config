@@ -6,4 +6,4 @@ metadata:
     app: unitdb
 data:
   TEMPLATE_NGINX_HTML: "0"
-  UNITDB_FILES_API_URL_FORMAT: https://api.faforever.com/featuredMods/0/files/%s
+  UNITDB_FILES_API_URL_FORMAT: https://api.##FAF_BASE_DOMAIN##/featuredMods/0/files/%s

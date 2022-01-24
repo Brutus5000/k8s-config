@@ -2,20 +2,20 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
-    app: faf-replay-server
-  name: faf-replay-server
+    app: faf-lobby-server
+  name: faf-lobby-server
 spec:
   podManagementPolicy: OrderedReady
   replicas: 1  # Never scale more than 1 replica. This will most probably corrupt the data.
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: faf-replay-server
-  serviceName: faf-replay-server
+      app: faf-lobby-server
+  serviceName: faf-lobby-server
   template:
     metadata:
       labels:
-        app: faf-replay-server
+        app: faf-lobby-server
       annotations:
         prometheus.io/scrape: 'true'
         prometheus.io/port: '8011'
@@ -28,9 +28,9 @@ spec:
           command: ['sh', '-c', "/config/build-config.sh"]
           envFrom:
             - configMapRef:
-                name: faf-replay-server
+                name: faf-lobby-server
             - secretRef:
-                name: faf-replay-server
+                name: faf-lobby-server
           volumeMounts:
             - name: pod-config
               mountPath: /pod
@@ -41,33 +41,28 @@ spec:
               mountPath: /config/build-config.sh
               subPath: build-config.sh
       containers:
-      - name: faf-replay-server
-        image: faforever/faf-aio-replayserver:1.1.4
+      - name: faf-lobby-server
+        image: faforever/faf-python-server:v1.11.0
         imagePullPolicy: IfNotPresent
         envFrom:
           - configMapRef:
-              name: faf-replay-server
+              name: faf-lobby-server
           - secretRef:
-              name: faf-replay-server
+              name: faf-lobby-server
         ports:
-        - containerPort: 15000
+        - containerPort: 8002
           protocol: TCP
         volumeMounts:
           - name: pod-config
             mountPath: /pod
-          - name: faf-content-pvc
-            mountPath: /content
       restartPolicy: Always
       volumes:
-      - name: faf-content-pvc
-        persistentVolumeClaim:
-          claimName: faf-content-pvc
       - name: pod-config
         emptyDir: {}
       - name: config-script
         configMap:
-          name: faf-replay-server
+          name: faf-lobby-server
           defaultMode: 077
       - name: config-template
         configMap:
-          name: faf-replay-server
+          name: faf-lobby-server

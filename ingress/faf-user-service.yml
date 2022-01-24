@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`user.${FAF_BASE_DOMAIN}`)
+    - match: Host(`user.##FAF_BASE_DOMAIN##`)
       kind: Rule
       services:
         - name: faf-user-service
