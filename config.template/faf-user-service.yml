@@ -5,6 +5,8 @@ metadata:
   labels:
     app: faf-user-service
 data:
+  # Only for testing environments
+  FAF_ENVIRONMENT: K8S
   PASSWORD_RESET_URL: https://www.##FAF_BASE_DOMAIN##/account/password/reset
   REGISTER_ACCOUNT_URL: https://www.##FAF_BASE_DOMAIN##/account/register
   FAILED_LOGIN_ACCOUNT_THRESHOLD: "5"
