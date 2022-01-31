@@ -102,6 +102,17 @@ We have to select which resource type we use and we should stick to it consisten
 **Decision:** We'll use Traefik as long as we don't run into any problems, since it seems less maintenance buurden. Cert-manager can still be introduced later if required.
 
 
+=== RabbitMQ
+
+For RabbitMQ there are 3 potential ways of implementing:
+
+* Manually define a single-node statefulset as a 1:1 copy of faf-stack.
+* A Helm chart from Bitnami
+* Deploying the RabbitMQ operator
+
+**Decision:** We'll run for the Bitnami helm charts. It is really awesome configurable so that it can read _our_ secrets, so the template can be perfectly configure. This simplifies coding compared to a manual stefulset. The RabbitMQ operator seems much more complex for now.
+
+
 === User access and RBAC
 
 * We want to give access to multiple people with potentially different permissions.

@@ -9,6 +9,7 @@ data:
   DB_HOST: "mariadb"
   DB_NAME: "faf"
   DB_USERNAME: "faf-lobby-server"
+  RABBITMQ_USER: "faf-lobby-server"
   config.yml.template: |
     CONFIGURATION_REFRESH_TIME: 60
     LOG_LEVEL: "DEBUG"
@@ -21,7 +22,7 @@ data:
     MQ_SERVER: "rabbitmq"
     MQ_PORT: 5672
     MQ_VHOST: "/faf-core"
-    MQ_USER: "faf-lobby-server"
+    MQ_USER: "${RABBITMQ_USER}"
     MQ_PASSWORD: "${RABBITMQ_PASSWORD}"
     MQ_EXCHANGE_NAME: "faf-lobby"
 

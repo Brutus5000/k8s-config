@@ -6,4 +6,5 @@ metadata:
     app: faf-lobby-server
 stringData:
   DB_PASSWORD: "banana"
+  RABBITMQ_PASSWORD: "banana"
 type: Opaque
