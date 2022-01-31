@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: rabbitmq
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`rabbitmq.##FAF_BASE_DOMAIN##`)
+      kind: Rule
+      services:
+        - name: rabbitmq
+          port: 15672
+  tls:
+    certResolver: default

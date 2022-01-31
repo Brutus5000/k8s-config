@@ -1,0 +1,18 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: rabbitmq
+  labels:
+    app: rabbitmq
+spec:
+  # Get the current url at https://charts.bitnami.com/bitnami/index.yaml
+  # 8.27.0 == RabbitMQ 3.9.13
+  chart: https://charts.bitnami.com/bitnami/rabbitmq-8.27.0.tgz
+  valuesContent: |-
+    auth:
+      username: admin
+      # This links to the rabbitmq secret
+      existingPasswordSecret: rabbitmq
+      existingErlangSecret: rabbitmq
+    metrics.enabled: true
+    persistence.existingClaim: rabbitmq-pvc
