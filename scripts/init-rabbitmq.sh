@@ -1,6 +1,5 @@
 #!/bin/sh
 # Setup rabbitmq vhost and users
-set -x
 
 # fail on errors
 set -e
