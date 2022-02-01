@@ -11,8 +11,8 @@ Traefik needs some setup before it can work with Let's Encrypt. Unfortunately th
 
 **Traefik "native" solution:**
 
-Traefik needs a certificate resolver, but there is no way in the Helm chart to do this explicitly. The only way is additionalArguments (global Traefik params).
-So you need to add a `HelmChartConfig` and put it into `/var/lib/rancher/k3s/server/manifests/traefik-config.yaml`.
+Traefik needs a certificate resolver. The only way to do this with the helm cart is to add additionalArguments (global Traefik params).
+So you need to add a `HelmChartConfig` and apply it to the cluster. This will reconfigure Traefik automatically.
 
 Example:
 [source,yaml]
