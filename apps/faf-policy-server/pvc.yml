@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: faf-policy-server-pvc
+  labels:
+    app: faf-policy-server
+spec:
+  storageClassName: local-fast-storage
+  volumeName: faf-policy-server-pv
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 10Mi

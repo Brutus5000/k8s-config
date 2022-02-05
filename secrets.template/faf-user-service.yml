@@ -4,6 +4,6 @@ metadata:
   name: faf-user-service
   labels:
     app: faf-user-service
-data:
-  DB_PASSWORD: YmFuYW5h
+stringData:
+  DB_PASSWORD: banana
 type: Opaque

@@ -1,0 +1,24 @@
+# TODO: This volume should move to NFS so it can run on any node
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: faf-policy-server-pv
+  labels:
+    app: faf-policy-server
+spec:
+  capacity:
+    storage: 20Mi
+  accessModes:
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-fast-storage
+  local:
+    path: /opt/faf/data/faf-policy-server
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: storage-id
+              operator: In
+              values:
+                - main-01

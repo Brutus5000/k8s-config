@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faf-policy-server
+  labels:
+    app: faf-policy-server
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: faf-policy-server
+  template:
+    metadata:
+      labels:
+        app: faf-policy-server
+      annotations:
+        prometheus.io/scrape: 'false'
+    spec:
+      containers:
+        - image: faforever/faf-policy-server:v1.22
+          imagePullPolicy: Always
+          name: faf-policy-server
+          envFrom:
+            - configMapRef:
+                name: faf-policy-server
+            - secretRef:
+                name: faf-policy-server
+          ports:
+            - containerPort: 8097
+          startupProbe:
+            httpGet:
+              port: 8097
+              path: /health
+            failureThreshold: 10
+            periodSeconds: 3
+          livenessProbe:
+            httpGet:
+              port: 8097
+              path: /health
+            failureThreshold: 3
+            periodSeconds: 10
+      restartPolicy: Always
+
+
