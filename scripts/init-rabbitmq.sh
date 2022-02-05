@@ -36,12 +36,8 @@ VHOST_FAF_CORE="/faf-core"
 
 create_vhost $VHOST_FAF_CORE
 create_user_for_vhost faf-lobby-server RABBITMQ_USER RABBITMQ_PASSWORD $VHOST_FAF_CORE
+create_user_for_vhost faf-league-service MQ_USER MQ_PASSWORD $VHOST_FAF_CORE
 
-#docker-compose exec faf-rabbitmq rabbitmqctl add_user "${RABBITMQ_FAF_API_USER}" "${RABBITMQ_FAF_API_PASS}"
-#docker-compose exec faf-rabbitmq rabbitmqctl set_permissions -p "${RABBITMQ_FAF_VHOST}" "${RABBITMQ_FAF_API_USER}" ".*" ".*" ".*"
-#docker-compose exec faf-rabbitmq rabbitmqctl add_user "${RABBITMQ_FAF_LEAGUE_SERVICE_USER}" "${RABBITMQ_FAF_LEAGUE_SERVICE_PASS}"
-#docker-compose exec faf-rabbitmq rabbitmqctl set_permissions -p "${RABBITMQ_FAF_VHOST}" "${RABBITMQ_FAF_LEAGUE_SERVICE_USER}" ".*" ".*" ".*"
-#
 #docker-compose exec faf-rabbitmq rabbitmqctl add_vhost "${RABBITMQ_POSTAL_VHOST}"
 #docker-compose exec faf-rabbitmq rabbitmqctl add_user "${RABBITMQ_POSTAL_USER}" "${RABBITMQ_POSTAL_PASS}"
 #docker-compose exec faf-rabbitmq rabbitmqctl set_permissions -p "${RABBITMQ_POSTAL_VHOST}" "${RABBITMQ_POSTAL_USER}" ".*" ".*" ".*"

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: faf-league-service
+  labels:
+    app: faf-league-service
+stringData:
+  DB_PASSWORD: banana
+  MQ_PASSWORD: banana
+type: Opaque

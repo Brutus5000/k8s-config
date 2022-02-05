@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faf-league-service
+  labels:
+    app: faf-league-service
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: faf-league-service
+  template:
+    metadata:
+      labels:
+        app: faf-league-service
+      annotations:
+        prometheus.io/scrape: 'false'
+    spec:
+      containers:
+        - image: faforever/faf-league-service:1.0.0
+          imagePullPolicy: Always
+          name: faf-league-service
+          envFrom:
+            - configMapRef:
+                name: faf-league-service
+            - secretRef:
+                name: faf-league-service
+      restartPolicy: Always
+
+

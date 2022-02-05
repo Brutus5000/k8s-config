@@ -45,3 +45,4 @@ create_user_with_db ory-hydra DB_NAME DB_USERNAME DB_PASSWORD
 create_user_with_db faf-lobby-server DB_NAME DB_USERNAME DB_PASSWORD
 create_user_with_db faf-replay-server DB_NAME DB_USERNAME RS_DB_PASSWORD
 create_user_with_db faf-policy-server DATABASE_NAME DATABASE_USER DATABASE_PASSWORD
+create_user_with_db faf-league-service DB_NAME DB_LOGIN DB_PASSWORD

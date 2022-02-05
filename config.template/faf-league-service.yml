@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: faf-league-service
+  labels:
+    app: faf-league-service
+data:
+  DB_SERVER: mariadb
+  DB_PORT: "3306"
+  DB_LOGIN: faf-league-service
+  DB_NAME: faf-league
+  AUTO_APPLY_MIGRATIONS: "1"
+
+  MQ_USER: faf-league-service
+  MQ_SERVER: rabbitmq
+  MQ_PORT: "5672"
+  MQ_VHOST: /faf-core
+  MQ_PREFETCH_COUNT: "300"
+
+  EXCHANGE_NAME: faf-lobby
+  TRUESKILL_RATING_UPDATE_ROUTING_KEY: success.rating.update
+  LEAGUE_SCORE_UPDATE_ROUTING_KEY: success.leagueScore.update
+  LEAGUE_SCORE_UPDATE_FAIL_ROUTING_KEY: failure.leagueScore.update
+
+  RATING_MODIFIER_FOR_PLACEMENT: "-100"
+  SCORE_GAIN: "1"
+  POSITIVE_BOOST: "1"
+  NEGATIVE_BOOST: "1"
+  HIGHEST_DIVISION_BOOST: "1"
+  POINT_BUFFER_AFTER_DIVISION_CHANGE: "2"
