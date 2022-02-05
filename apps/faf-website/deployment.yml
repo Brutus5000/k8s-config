@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faf-website
+  labels:
+    app: faf-website
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: faf-website
+  template:
+    metadata:
+      labels:
+        app: faf-website
+      annotations:
+        prometheus.io/scrape: 'false'
+    spec:
+      containers:
+        - image: faforever/faf-website:develop
+          imagePullPolicy: Always
+          name: faf-website
+          envFrom:
+            - configMapRef:
+                name: faf-website
+            - secretRef:
+                name: faf-website
+          ports:
+            - containerPort: 3000
+#          startupProbe:
+#            httpGet:
+#              port: 3000
+#              path: /health
+#            failureThreshold: 10
+#            periodSeconds: 3
+#          livenessProbe:
+#            httpGet:
+#              port: 3000
+#              path: /health
+#            failureThreshold: 3
+#            periodSeconds: 10
+      restartPolicy: Always
+
+

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: faf-website
+  labels:
+    app: faf-website
+stringData:
+  OAUTH_CLIENT_SECRET: banana
+  CHALLONGE_APIKEY: ""
+  SESSION_SECRET_KEY: banana
+  RECAPTCHA_SITE_KEY: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+type: Opaque

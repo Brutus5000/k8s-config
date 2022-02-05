@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: faf-website
+  labels:
+    app: faf-website
+data:
+  # Only for testing environments
+  NODE_ENV: production
+  WP_URL: http://wordpress/wp-json
+  WP_NEWSHUB_CATEGORYID: "283"                      # define a category in wordpress to show posts on newshub
+  WP_NEWSHUBARCHIVE_CATEGORYID: "284"               # define a category in wordpress to hide old newshub posts
+  CHALLONGE_USERNAME: ""
+  API_URL: https://api.##FAF_BASE_DOMAIN##
+  LOBBY_API_URL: http://faf-lobby-server:4000
+  OAUTH_URL: https://hydra.##FAF_BASE_DOMAIN##
+  OAUTH_CLIENT_ID: faf-website
+  HOST: https://##FAF_BASE_DOMAIN##
+
+  TOKEN_LIFESPAN: "43200"                      # an api token is valid for 12h
+  LEAGUES_UPDATE_INTERVAL: "3600"              # one hour
+  LEADERBOARDS_UPDATE_INTERVAL: "900"          # 15 minutes
+  RECENT_USERS_LIST_UPDATE_INTERVAL: "900"     # 15 minutes
+  CLIENT_RELEASE_FETCHING_INTERVAL: "900"      # 15 minutes
+  CLAN_LIST_UPDATE_INTERVAL: "900"             # 15 minutes
+  PLAYER_COUNT_UPDATE_INTERVAL: "10"           # 10 seconds
