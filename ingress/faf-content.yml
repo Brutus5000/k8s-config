@@ -1,0 +1,33 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: faf-content
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`content.##FAF_BASE_DOMAIN##`)
+      kind: Rule
+      services:
+        - name: faf-content
+          port: 80
+    - match: Host(`replay.##FAF_BASE_DOMAIN##`)
+      kind: Rule
+      services:
+        - name: faf-content
+          port: 80
+      middlewares:
+        - name: replay-redirect
+  tls:
+    certResolver: default
+
+---
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: replay-redirect
+spec:
+  redirectRegex:
+    regex: "^(http|https)://replay.##FAF_BASE_DOMAIN##/(.*)"
+    replacement: "${1}://api.##FAF_BASE_DOMAIN##/game/${2}/replay"
