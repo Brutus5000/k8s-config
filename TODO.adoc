@@ -1,7 +1,5 @@
 = TO DO - List
 
-* Compare Traefik Let's Encrypt with cert-manager.
-* Think about cluster SSO maybe linked to Github accounts
 * Define a concept for RBAC
 * Investigate usage of helm
 ** Configurable host name for prod/test configs
@@ -16,16 +14,76 @@
 |Status
 |Comment
 
+|FAF api
+|:heavy_check_mark:
+|
+
+|FAF content
+|:heavy_check_mark:
+|
+
+|FAF db migrations
+|:heavy_check_mark:
+|
+
+|FAF league service
+|:heavy_check_mark:
+|untested
+
+|FAF league service
+|:heavy_check_mark:
+|untested
+
+|FAF policy service
+|:heavy_check_mark:
+|untested
+
+|FAF replay server
+|:heavy_check_mark:
+|untested
+
+|FAF user service
+|:heavy_check_mark:
+|
+
+|FAF website
+|:heavy_check_mark:
+|
+
+|MariaDB
+|:heavy_check_mark:
+|
+
 |MongoDB
 |:heavy_check_mark:
 |
 
 |NodeBB
 |:hourglass:
-|Waiting for https://github.com/NodeBB/NodeBB/pull/10036[this PR] to be merged
+|Waiting for https://github.com/NodeBB/NodeBB/pull/10036[this PR] to be merged. Maybe also https://github.com/NodeBB/NodeBB/pull/8704[this] could simplify things.
 
 |phpBB3 Archive (Nginx)
 |:heavy_check_mark:
 |
+
+|Postal
+|:heavy_check_mark:
+|
+
+|RabbitMQ
+|:heavy_check_mark:
+|
+
+|UnitDB
+|:heavy_check_mark:
+|
+
+|Voting
+|:heavy_check_mark:
+|untested
+
+|Wordpress
+|:heavy_check_mark:
+|untested
 
 |===
