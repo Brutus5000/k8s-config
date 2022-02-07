@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: postal
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`postal.##FAF_BASE_DOMAIN##`)
+      kind: Rule
+      services:
+        - name: postal-web
+          port: 5000
+  tls:
+    certResolver: default

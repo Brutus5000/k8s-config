@@ -35,8 +35,24 @@ create_user_with_db() {
 SQL_SCRIPT
 }
 
+# grant_extra_permission(service_name, database_key, username_key, db_prefix)
+#
+# Will grant all privileges on databases matching db_prefix
+grant_extra_permission() {
+    SERVICE_NAME=$1
+    DATABASE=$(get_config_value postal "$2")
+    USERNAME=$(get_config_value postal "$3")
+    DB_PREFIX=$(get_config_value postal "$4")
+
+    echo "Assign all privileges to user ${USERNAME} for databses with prefix $DB_PREFIX"
+    kubectl exec -i mariadb-0 -- mariadb --user=root --password="${ROOT_PASSWORD}" <<SQL_SCRIPT
+        GRANT ALL PRIVILEGES ON \`${DB_PREFIX}%\`.* TO '${USERNAME}'@'%';
+SQL_SCRIPT
+}
+
 # serviceName, database, username, password, dbOptions
 create_user_with_db wordpress WORDPRESS_DB_NAME WORDPRESS_DB_USER WORDPRESS_DB_PASSWORD
+create_user_with_db postal DB_NAME DB_USER DB_PASSWORD
 create_user_with_db faf-api DATABASE_NAME DATABASE_USERNAME DATABASE_PASSWORD
 create_user_with_db faf-api LEAGUE_DATABASE_NAME LEAGUE_DATABASE_USERNAME LEAGUE_DATABASE_PASSWORD
 create_user_with_db faf-user-service DB_NAME DB_USERNAME DB_PASSWORD
@@ -46,3 +62,6 @@ create_user_with_db faf-lobby-server DB_NAME DB_USERNAME DB_PASSWORD
 create_user_with_db faf-replay-server DB_NAME DB_USERNAME RS_DB_PASSWORD
 create_user_with_db faf-policy-server DATABASE_NAME DATABASE_USER DATABASE_PASSWORD
 create_user_with_db faf-league-service DB_NAME DB_LOGIN DB_PASSWORD
+
+# Postal creates 1 database per "server" (I'd rather say it's a tenant)
+grant_extra_permission postal DB_NAME DB_USER DB_TENANT_PREFIX

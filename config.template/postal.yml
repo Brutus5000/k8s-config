@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postal
+  labels:
+    app: postal
+data:
+  DB_HOST: "mariadb"
+  DB_NAME: "postal"
+  DB_USER: "postal"
+  DB_TENANT_PREFIX: "postal"
+  RABBITMQ_HOST: "rabbitmq"
+  RABBITMQ_USER: "postal"
+  postal.yml.template: |-
+    general:
+      # This can be changed to allow messages to be sent from multiple IP addresses
+      use_ip_pools: false
+
+    web:
+      # The host that the management interface will be available on
+      host: postal.##FAF_BASE_DOMAIN##
+      # The protocol that requests to the management interface should happen on
+      protocol: https
+
+    web_server:
+      # Specify configuration for the Postal web server
+      bind_address: 0.0.0.0
+      port: 5000
+
+    smtp_server:
+      # Specify configuration to the Postal SMTP server
+      port: 2525
+
+    logging:
+      # Specify options for the logging
+      stdout: true
+
+    main_db:
+      # Specify the connection details for your MySQL database
+      host: ${DB_HOST}
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
+      database: ${DB_NAME}
+
+    message_db:
+      # Specify the connection details for your MySQL server that will be house the
+      # message databases for mail servers.
+      host: ${DB_HOST}
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
+      prefix: ${DB_TENANT_PREFIX}
+
+    rabbitmq:
+      # Specify connection details for your RabbitMQ server
+      host: ${RABBITMQ_HOST}
+      username: ${RABBITMQ_USER}
+      password: ${RABBITMQ_PASSWORD}
+      vhost: /postal
+
+    dns:
+      # Specify the DNS records that you have configured. Refer to the documentation at
+      # https://github.com/atech/postal/wiki/Domains-&-DNS-Configuration for further
+      # information about these.
+      mx_records:
+        - mx.##FAF_BASE_DOMAIN##
+      smtp_server_hostname: postal.##FAF_BASE_DOMAIN##
+      spf_include: spf.postal.##FAF_BASE_DOMAIN##
+      return_path: rp.postal.##FAF_BASE_DOMAIN##
+      route_domain: routes.postal.##FAF_BASE_DOMAIN##
+      track_domain: track.postal.##FAF_BASE_DOMAIN##
+
+    smtp:
+      # Specify an SMTP server that can be used to send messages from the Postal management
+      # system to users. You can configure this to use a Postal mail server once the
+      # your installation has been set up.
+      host: 127.0.0.1
+      port: 2525
+      username: # Complete when Postal is running and you can
+      password: # generate the credentials within the interface.
+      from_name: Postal
+      from_address: postal@##FAF_BASE_DOMAIN##
+
+    rails:
+      # This is generated automatically by the config initialization. It should be a random
+      # string unique to your installation.
+      secret_key: ${RAILS_SECRET}
+
+  # Configuration shell script
+  build-config.sh: |
+    #!/bin/sh
+    cat /config/postal.yml.template | envsubst > /pod/postal.yml

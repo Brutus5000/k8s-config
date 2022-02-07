@@ -32,7 +32,7 @@ create_user_for_vhost() {
   # fuck you grep for your incapability to process hyphens
   USER_EXISTS=$(kubectl exec rabbitmq-0 -- rabbitmqctl list_users | sed -n "/$USERNAME/p" | wc -l)
 
-  if [ "$USER_EXISTS" ]
+  if [ "$USER_EXISTS" -eq 1 ]
   then
     echo "WARNING: User already exists. Will be recreated!"
     kubectl exec -i rabbitmq-0 -- rabbitmqctl delete_user "${USERNAME}"
@@ -43,6 +43,10 @@ create_user_for_vhost() {
 }
 
 VHOST_FAF_CORE="/faf-core"
+VHOST_POSTAL="/postal"
+
+create_vhost $VHOST_POSTAL
+create_user_for_vhost postal RABBITMQ_USER RABBITMQ_PASSWORD $VHOST_POSTAL
 
 create_vhost $VHOST_FAF_CORE
 create_user_for_vhost faf-lobby-server RABBITMQ_USER RABBITMQ_PASSWORD $VHOST_FAF_CORE

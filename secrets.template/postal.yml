@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postal
+  labels:
+    app: postal
+stringData:
+  DB_PASSWORD: "banana"
+  RABBITMQ_PASSWORD: "banana"
+  RAILS_SECRET: "banana"
+  # Change the signing.key for your installation!
+  signing.key: |-
+    -----BEGIN RSA PRIVATE KEY-----
+    MIICXAIBAAKBgQDEdz4lqprzQfLAQjOnIkA3o0w1zUGVA9sW2OaW1pUVeG31bYbc
+    To7T0ayoH2ZvqMskDgnHL4kHiGj53r4FVK1y3SSliTjsgMUH/cQ6P57E+8mf5d/b
+    wxb1bTyPIVjKBgOiyzSgJ1PBBKrFsBezBb5pZzVVm1pn4esAJipsuYz81QIDAQAB
+    AoGAYrR99rKWEq0JZupbxRaCKPHT8hvjXRiI1Bu5DgNU92p/5BRY8wpM28K1+el8
+    r5CgLscWxontUGmKRC9STJ9UXESC26nkXtMp+JjQk9jcCCvMCrI2Ub5NkTYYpzXk
+    K37+sO6D5aEqur6fv1vYXMKQ0TIfQBJQ/EL7L/38nuf7SwECQQD5HQJp7WJdsTiY
+    wozE64Z4DWABRASwc5/BLQTSgtx1x9He4+ZCogCjZbv3gFrmpF3z9LIV2nbjDNQ7
+    TARWe2shAkEAyeWku85HUnuzobRniihn1RNrToMVuBCD37QQm/f0yP1iIqf94qOS
+    D7yyDZ7xh+GNqKXWN8nAuoOlti44FXzvNQJAIPp6K1PFxemEOJTo1djoQFRk9UXv
+    6PwllglDriqszNrbKcq53PBdbUQ2khln70irN3SZbtMxEfXM0tzJZjmIgQJBAIZa
+    h5Fi6Bt/rj5Bq1VJJi+pSJNqsB1ZACjxzsu76e2GkLO3T0Bu0Vgfne1qhBiEhJxi
+    H3fojpSP3sqpXzENfrECQAMHWiRpDPIC2Zhx6o3R4IRTalK/xGWU3b3QcISvFoSV
+    dUnV126lqxMssZBenIQiUybJRxtIZODc+H5icB3C7lw=
+    -----END RSA PRIVATE KEY-----
+type: Opaque

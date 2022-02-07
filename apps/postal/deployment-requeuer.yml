@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: postal-requeuer
+    app-group: postal
+  name: postal-requeuer
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: postal-requeuer
+  template:
+    metadata:
+      labels:
+        app: postal-requeuer
+        app-group: postal
+    spec:
+      initContainers:
+        - name: setup
+          image: brutus5000/alpine-envsubst:3
+          imagePullPolicy: Always
+          command: [ 'sh', '-c', "/config/build-config.sh" ]
+          envFrom:
+            - configMapRef:
+                name: postal
+            - secretRef:
+                name: postal
+          volumeMounts:
+            - name: pod-config
+              mountPath: /pod
+            - name: config-template
+              mountPath: /config/postal.yml.template
+              subPath: postal.yml.template
+            - name: config-script
+              mountPath: /config/build-config.sh
+              subPath: build-config.sh
+      containers:
+        - image: ghcr.io/postalserver/postal:2.1.0
+          imagePullPolicy: Always
+          name: postal-requeuer
+          args:
+            - postal
+            - requeuer
+          volumeMounts:
+            - name: pod-config
+              mountPath: /config/postal.yml
+              subPath: postal.yml
+            - name: config-secret
+              mountPath: /config/signing.key
+              subPath: signing.key
+      restartPolicy: Always
+      volumes:
+        - name: pod-config
+          emptyDir: { }
+        - name: config-script
+          configMap:
+            name: postal
+            defaultMode: 077
+        - name: config-template
+          configMap:
+            name: postal
+        - name: config-secret
+          secret:
+            secretName: postal

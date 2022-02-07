@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postal-smtp-server
+  labels:
+    app: postal-smtp-server
+spec:
+  selector:
+    app: postal-smtp-server
+  ports:
+    - port: 2525
+      targetPort: 2525
