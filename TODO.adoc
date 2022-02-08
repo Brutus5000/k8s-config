@@ -86,4 +86,40 @@
 |:heavy_check_mark:
 |untested
 
+|WikiJS
+|:x:
+|
+
+|Postgres
+|:x:
+|for WikiJS
+
+|Anope
+|:x:
+|
+
+|UnrealIRCD
+|:x:
+|
+
+|FAF QAI
+|:x:
+|
+
+|Coturn
+|:x:
+|
+
+|Prometheus
+|:x:
+|
+
+|Grafana
+|:x:
+|
+
+|MySQL Exporter
+|:x:
+|
+
 |===
