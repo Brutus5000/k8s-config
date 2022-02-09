@@ -95,8 +95,8 @@
 |for WikiJS
 
 |Anope
-|:x:
-|
+|:heavy_check_mark:
+|untested
 
 |UnrealIRCD
 |:heavy_check_mark:
