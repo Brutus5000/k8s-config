@@ -1,0 +1,48 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: unrealircd-6667
+spec:
+  entryPoints:
+    - unrealircd-6667
+  routes:
+    # plain TCP connections don't send a host, thus we need to put in wildcard
+    - match: HostSNI(`*`)
+      kind: Rule
+      services:
+        - name: unrealircd
+          port: 6667
+
+---
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: unrealircd-6697
+spec:
+  entryPoints:
+    - unrealircd-6697
+  routes:
+    # plain TCP connections don't send a host, thus we need to put in wildcard
+    - match: HostSNI(`*`)
+      kind: Rule
+      services:
+        - name: unrealircd
+          port: 6697
+
+---
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: unrealircd-8167
+spec:
+  entryPoints:
+    # plain TCP connections don't send a host, thus we need to put in wildcard
+    - unrealircd-8167
+  routes:
+    - match: HostSNI(`*`)
+      kind: Rule
+      services:
+        - name: unrealircd
+          port: 8167

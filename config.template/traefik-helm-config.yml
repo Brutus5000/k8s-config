@@ -15,14 +15,36 @@ spec:
       lobby-server:
         port: 8002
         expose: true
-        exposedPort: 8002 
+        exposedPort: 8002
         protocol: TCP
         tls:
           enabled: false
       replay-server:
         port: 15000
         expose: true
-        exposedPort: 15000 
+        exposedPort: 15000
         protocol: TCP
         tls:
           enabled: false
+      unrealircd-6667:
+        port: 6667
+        expose: true
+        exposedPort: 6667
+        protocol: TCP
+        tls:
+          enabled: false
+      unrealircd-6697:
+        port: 6697
+        expose: true
+        exposedPort: 6697
+        protocol: TCP
+        tls:
+          enabled: false
+      unrealircd-8167:
+        port: 8167
+        expose: true
+        exposedPort: 8167
+        protocol: TCP
+        tls:
+          enabled: false
+

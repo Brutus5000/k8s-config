@@ -28,5 +28,6 @@ apply_folder() {
 
 apply_folder secrets.template # TODO: don't use template
 apply_folder config.template  # TODO: don't use template
+apply_folder storage/local-fast
 apply_folder ingress
 apply_folder "apps/*"

@@ -99,8 +99,8 @@
 |
 
 |UnrealIRCD
-|:x:
-|
+|:heavy_check_mark:
+|untested
 
 |FAF QAI
 |:x:

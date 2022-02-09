@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: unrealircd-pvc
+  labels:
+    app: unrealircd
+spec:
+  storageClassName: local-fast-storage
+  volumeName: unrealircd-pv
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
