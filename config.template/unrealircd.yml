@@ -170,7 +170,7 @@ data:
         hostname services.##FAF_BASE_DOMAIN##;
         port 7000;
      };
-     password "B4n4nA";
+     password "banana";
      class	servers;
     };
 

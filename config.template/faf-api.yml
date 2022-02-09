@@ -13,12 +13,13 @@ data:
   DATABASE_ADDRESS: mariadb
   DATABASE_NAME: faf
   DATABASE_USERNAME: faf-api
+  ANOPE_DATABASE_NAME: anope
   EMAIL_FROM_ADDRESS: admin@localhost
   EMAIL_FROM_NAME: Your localhost FAF team
   GITHUB_DEPLOYMENT_ENVIRONMENT: development
   LEAGUE_DATABASE_ADDRESS: mariadb
   LEAGUE_DATABASE_NAME: faf-league
-  LEAGUE_DATABASE_USERNAME: faf-league-service
+  LEAGUE_DATABASE_USERNAME: faf-api
   MAUTIC_ACCESS_TOKEN_URL: http://faf-mautic/oauth/v2/token
   MAUTIC_BASE_URL: http://faf-mautic/api
   MAUTIC_CLIENT_ID: faf-api

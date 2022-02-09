@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: anope
+  name: anope
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1  # Never scale more than 1 replica. This will most probably corrupt the data.
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: anope
+  serviceName: anope
+  template:
+    metadata:
+      labels:
+        app: anope
+    spec:
+      initContainers:
+        - name: setup
+          image: brutus5000/alpine-envsubst:3
+          imagePullPolicy: Always
+          command: [ 'sh', '-c', "/config/build-config.sh" ]
+          envFrom:
+            - configMapRef:
+                name: anope
+            - secretRef:
+                name: anope
+          volumeMounts:
+            - name: pod-config
+              mountPath: /pod
+            - name: config-template
+              mountPath: /config/services.conf.template
+              subPath: services.conf.template
+            - name: config-script
+              mountPath: /config/build-config.sh
+              subPath: build-config.sh
+      containers:
+      - image: anope/anope:2.0.10
+        imagePullPolicy: IfNotPresent
+        name: anope
+        envFrom:
+          - configMapRef:
+              name: anope
+          - secretRef:
+              name: anope
+        volumeMounts:
+          - name: pod-config
+            mountPath: /anope/conf/services.conf
+            subPath: services.conf
+      restartPolicy: Always
+      volumes:
+        - name: pod-config
+          emptyDir: { }
+        - name: config-script
+          configMap:
+            name: anope
+            defaultMode: 077
+        - name: config-template
+          configMap:
+            name: anope

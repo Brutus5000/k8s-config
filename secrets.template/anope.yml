@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: anope
+  labels:
+    app: anope
+stringData:
+  DB_PASSWORD: "banana"
+  UPLINK_PASSWORD: "banana"
+type: Opaque
