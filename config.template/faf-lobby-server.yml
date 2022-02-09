@@ -9,6 +9,7 @@ data:
   DB_HOST: "mariadb"
   DB_NAME: "faf"
   DB_USERNAME: "faf-lobby-server"
+  ANOPE_DB_NAME: "anope"  # This is hardcoded in the server! Don't change it! It's just here for the user creation script
   RABBITMQ_USER: "faf-lobby-server"
   config.yml.template: |
     CONFIGURATION_REFRESH_TIME: 60
