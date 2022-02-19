@@ -60,7 +60,6 @@ digraph FAF {
         Website -> "Lobby Server" [ label = "game stats" ]
         Wordpress
         "Content Server"
-        Mautic
         QAI
         UnitDB
 
@@ -102,9 +101,7 @@ digraph FAF {
     "Lobby Server" -> RabbitMQ [ label = "game events"]
     "League Service" -> RabbitMQ [ label = "game events" ]
     "Lobby Server" -> Coturn [ label = "directs games to" ]
-    API -> Mautic [ label="manage contacts,\nsend emails"]
     NodeBB -> Postal
-    Mautic -> Postal
     MediaWiki -> Postal
     QAI -> UnrealIRCD
     QAI -> API [ label = "data lookup" ]
