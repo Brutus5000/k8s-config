@@ -6,8 +6,8 @@ metadata:
     app: rabbitmq
 spec:
   # Get the current url at https://charts.bitnami.com/bitnami/index.yaml
-  # 8.27.0 == RabbitMQ 3.9.13
-  chart: https://charts.bitnami.com/bitnami/rabbitmq-8.27.0.tgz
+  # 8.29.1 == RabbitMQ 3.9.13
+  chart: https://charts.bitnami.com/bitnami/rabbitmq-8.29.1.tgz
   valuesContent: |-
     auth:
       username: admin
