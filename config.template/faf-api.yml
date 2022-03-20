@@ -6,7 +6,7 @@ metadata:
     app: faf-api
 data:
   # Global options
-  FAF_DOMAIN: faforever.local
+  FAF_DOMAIN: "##FAF_BASE_DOMAIN##"
   JAVA_TOOL_OPTIONS: -Xms256m -Xmx512m -XX:+HeapDumpOnOutOfMemoryError
   
   # App options
