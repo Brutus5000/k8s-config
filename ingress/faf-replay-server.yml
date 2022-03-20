@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - replay-server
   routes:
-    - match: HostSNI(`lobby.##FAF_BASE_DOMAIN##`)
+    - match: HostSNI(`*`)
       kind: Rule
       services:
         - name: faf-replay-server
